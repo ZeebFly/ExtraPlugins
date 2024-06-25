@@ -1,37 +1,32 @@
 from pyrogram import filters
+from TheApi import api as aapi
 
-from VIPMUSIC import api, app
-
-
-async def get_advice():
-    b = await api.advice()
-    c = b["advice"]
-    return c
+from config import LOG_GROUP_ID
+from YukkiMusic import api, app
 
 
 @app.on_message(filters.command("advice"))
-async def clean(_, message):
+async def advice(_, message):
     A = await message.reply_text("...")
-    B = await get_advice()
-    await A.edit(B)
+    res = aapi.get_advice()
+    await A.edit(res["results"])
 
 
-__MODULE__ = "Advice"
+@app.on_message(filters.command("astronomical"))
+async def advice(_, message):
+    a = await api.astronomy()
+    if a["success"]:
+        c = a["date"]
+        url = a["imageUrl"]
+        b = a["explanation"]
+        caption = f"Tᴏᴅᴀʏ's [{c}] ᴀsᴛʀᴏɴᴏᴍɪᴄᴀʟ ᴇᴠᴇɴᴛ:\n\n{b}"
+        await message.reply_photo(url, caption=caption)
+    else:
+        await message.reply_photo("ᴛʀʏ ᴀғᴛᴇʀ sᴏᴍᴇ ᴛɪᴍᴇ")
+        await app.send_message(LOG_GROUP_ID, "/astronomical not working")
+
+
+__MODULE__ = "Aᴅᴠɪᴄᴇ"
 __HELP__ = """
-## Advice Command
-
-### Command: /advice
-**Description:**
-Fetches a random piece of advice from an API and displays it.
-**Usage:**
-/advice
-
-**Details:**
-- Sends a random piece of advice as a message in the chat.
-
-**Examples:**
-- /advice: Retrieves and displays advice.
-
-**Notes:**
-- This command can be used by any user to get a random advice.
-"""
+/advice - Gᴇᴛ ʀᴀɴᴅᴏᴍ ᴀᴅᴠɪᴄᴇ
+/astronomical - ᴛᴏ ɢᴇᴛ ᴛᴏᴅᴀʏ's ᴀsᴛʀᴏɴᴏᴍɪᴄᴀʟ  ғᴀᴄᴛ"""

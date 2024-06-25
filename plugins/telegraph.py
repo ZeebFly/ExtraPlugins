@@ -4,7 +4,7 @@ from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from telegraph import upload_file
 
-from VIPMUSIC import app
+from YukkiMusic import app
 
 
 @app.on_message(filters.command(["tgm", "tgt", "telegraph", "tl"]))
@@ -20,10 +20,7 @@ async def get_link_group(client, message):
             await text.edit_text(f"📥 ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ... {current * 100 / total:.1f}%")
 
         try:
-            location = f"cache"
-            local_path = await message.reply_to_message.download(
-                location, progress=progress
-            )
+            local_path = await message.reply_to_message.download(progress=progress)
             await text.edit_text("📤 ᴜᴘʟᴏᴀᴅɪɴɢ ᴛᴏ ᴛᴇʟᴇɢʀᴀᴘʜ...")
             upload_path = upload_file(local_path)
             await text.edit_text(
@@ -39,18 +36,36 @@ async def get_link_group(client, message):
                     ]
                 ),
             )
-            os.remove(local_path)
+            try:
+                os.remove(local_path)
+            except Exception:
+                pass
         except Exception as e:
             await text.edit_text(f"❌ |ғɪʟᴇ ᴜᴘʟᴏᴀᴅ ғᴀɪʟᴇᴅ \n\n<i>ʀᴇᴀsᴏɴ: {e}</i>")
-            os.remove(local_path)
+            try:
+                os.remove(local_path)
+            except Exception:
+                pass
             return
     except Exception:
         pass
 
 
-__MODULE__ = "Telegraph"
 __HELP__ = """
-This module provides commands to upload media to Telegraph.
+**ᴛᴇʟᴇɢʀᴀᴘʜ ᴜᴘʟᴏᴀᴅ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs**
 
-- `/tgm`, `/tgt`, `/telegraph`, `/tl`: Upload media to Telegraph.
+ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ᴜᴘʟᴏᴀᴅ ᴍᴇᴅɪᴀ ᴛᴏ ᴛᴇʟᴇɢʀᴀᴘʜ:
+
+- `/tgm`: ᴜᴘʟᴏᴀᴅ ʀᴇᴘʟɪᴇᴅ ᴍᴇᴅɪᴀ ᴛᴏ ᴛᴇʟᴇɢʀᴀᴘʜ.
+- `/tgt`: sᴀᴍᴇ ᴀs `/tgm`.
+- `/telegraph`: sᴀᴍᴇ ᴀs `/tgm`.
+- `/tl`: sᴀᴍᴇ ᴀs `/tgm`.
+
+**ᴇxᴀᴍᴘʟᴇ:**
+- ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴘʜᴏᴛᴏ ᴏʀ ᴠɪᴅᴇᴏ ᴡɪᴛʜ `/tgm` ᴛᴏ ᴜᴘʟᴏᴀᴅ ɪᴛ.
+
+**ɴᴏᴛᴇ:**
+ʏᴏᴜ ᴍᴜsᴛ ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴍᴇᴅɪᴀ ғɪʟᴇ ғᴏʀ ᴛʜᴇ ᴜᴘʟᴏᴀᴅ ᴛᴏ ᴡᴏʀᴋ.
 """
+
+__MODULE__ = "Tᴇʟᴇɢʀᴀᴘʜ"

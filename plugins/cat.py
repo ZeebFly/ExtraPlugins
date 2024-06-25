@@ -9,12 +9,12 @@ from pyrogram.types import (
 )
 
 from config import BANNED_USERS
-from VIPMUSIC import app
+from YukkiMusic import app
 
 close_keyboard = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton(text="Refresh", callback_data="refresh_cat")],
-        [InlineKeyboardButton(text="Close", callback_data="close")],
+        [InlineKeyboardButton(text="Rᴇғʀᴇsʜ", callback_data="refresh_cat")],
+        [InlineKeyboardButton(text="〆 ᴄʟᴏsᴇ 〆", callback_data="close")],
     ]
 )
 
@@ -42,7 +42,7 @@ async def refresh_cat(c, m: CallbackQuery):
         data = r.json()
         cat_url = data[0]["url"]
         if cat_url.endswith(".gif"):
-            await m.edit_caption_animation(
+            await m.edit_message_animation(
                 cat_url, caption="meow", reply_markup=close_keyboard
             )
         else:
@@ -52,30 +52,3 @@ async def refresh_cat(c, m: CallbackQuery):
             )
     else:
         await m.edit_message_text("Failed to refresh cat picture 🙀")
-
-
-__MODULE__ = "Cat"
-__HELP__ = """
-## Cat Command
-
-### Command: /cat
-**Description:**
-Fetches a random cat picture or GIF from The Cat API and sends it in the chat.
-
-**Usage:**
-/cat
-
-**Details:**
-- Displays a random cat image or GIF.
-- Includes buttons for refreshing the cat image or closing the message.
-
-**Examples:**
-- /cat: Sends a random cat picture or GIF.
-
-**Notes:**
-- Users who are banned will not be able to use this command.
-
-### Buttons:
-- **Refresh:** Gets a new cat image or GIF.
-- **Close:** Closes the cat image message.
-"""
